@@ -7,7 +7,7 @@ import {
   faMedium,
   faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
-import { Box, HStack, Link } from "@chakra-ui/react";
+import { Box, HStack, Link, useMergeRefs } from "@chakra-ui/react";
 
 const socials = [
   {
@@ -33,12 +33,15 @@ const socials = [
 ];
 
 const Header = () => {
-  const linkRef = useRef();
-  const [path, setPath] = useState({ path: "/" });
+  const proLinkRef = useRef();
+  const conLinkRef = useRef();
+  const [path, setPath] = useState("/");
+  const [scrollTo, setScrollTo] = useState();
+  const [prevScrollPos, setPrevScrollPos] = useState(150);
+  const [visible, setVisible] = useState(true);
 
-  const handleClick = (anchor) => () => {
+  const handleClick = (anchor) => {
     const id = `${anchor}-section`;
-    console.log(id);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({
@@ -48,18 +51,56 @@ const Header = () => {
     }
   };
 
-  const linkClickHandler = (e) => {
+  const proClickHandler = (e) => {
     e.preventDefault();
-    const formattedLinkText = e.target.innerText
-      ?.toLowerCase()
+    const formattedText = proLinkRef.current.innerText.toLowerCase();
+    setScrollTo(formattedText);
+    setPath(`#${formattedText}`);
+  };
+
+  const conClickHandler = (e) => {
+    e.preventDefault();
+    const formattedText = conLinkRef.current.innerText
+      .toLowerCase()
+      .split(" ")
+      .join("");
+
+    const formattedPath = conLinkRef.current.innerText
+      .toLowerCase()
       .split(" ")
       .join("-");
-    const updatedPath = {
-      ...path,
-      path: formattedLinkText,
-    };
-    setPath(updatedPath);
+
+    setPath(`#${formattedPath}`);
+    setScrollTo(formattedText);
   };
+
+  useEffect(() => {
+    handleClick(scrollTo);
+    // replacing the url
+    window.history.replaceState(null, null, path);
+  }, [path]);
+
+  const controlNavbar = () => {
+    const currScrollPos = window.scrollY;
+    console.log(currScrollPos);
+
+    if (currScrollPos > prevScrollPos) {
+      setVisible(false);
+    } else {
+      setVisible(true);
+    }
+
+    setPrevScrollPos(currScrollPos);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", controlNavbar);
+
+    // clean up function
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, []);
 
   return (
     <Box
@@ -67,7 +108,7 @@ const Header = () => {
       top={0}
       left={0}
       right={0}
-      translateY={0}
+      transform={visible ? "translateY(0)" : "translateY(-200px)"}
       transitionProperty="transform"
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
@@ -83,21 +124,21 @@ const Header = () => {
         >
           <nav>
             {/* Add social media links based on the `socials` data */}
-            <HStack gap="10px">
+            <HStack gap="15px">
               {socials.map((social) => (
                 <Link href={social.url} color="white" key={social.url}>
-                  {<FontAwesomeIcon icon={social.icon} size="lg" />}
+                  {<FontAwesomeIcon icon={social.icon} size="xl" />}
                 </Link>
               ))}
             </HStack>
           </nav>
           <nav>
-            <HStack spacing={8}>
+            <HStack spacing={20}>
               {/* Add links to Projects and Contact me section */}
-              <a href={path.path} ref={linkRef} onClick={linkClickHandler}>
+              <a href={path} ref={proLinkRef} onClick={proClickHandler}>
                 Projects
               </a>
-              <a href={path.path} ref={linkRef} onClick={linkClickHandler}>
+              <a href={path} ref={conLinkRef} onClick={conClickHandler}>
                 Contact Me
               </a>
             </HStack>

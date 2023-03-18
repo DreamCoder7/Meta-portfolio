@@ -3,6 +3,7 @@ import { Box, Heading } from "@chakra-ui/react";
 
 import FullScreenSection from "./FullScreenSection";
 import Card from "./Card";
+import "../index.css";
 
 const projects = [
   {
@@ -43,11 +44,7 @@ const ProjectsSection = () => {
       <Heading as="h1" id="projects-section" paddingBottom="25px">
         Featured Projects
       </Heading>
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(2,minmax(0,1fr))"
-        gridGap="25px"
-      >
+      <Box display="grid" gridGap="30px" className="feature__projects" w="100%">
         {projects.map((project) => (
           <Card
             key={project.title}

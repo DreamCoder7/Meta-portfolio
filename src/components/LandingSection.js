@@ -26,17 +26,29 @@ const LandingSection = () => {
         <Avatar
           src={profile}
           name="Abreham"
-          width="5rem"
-          height="5rem"
+          width="10rem"
+          height="10rem"
+          border="2px solid #14532d"
           borderRadius="50%"
         />
-        <Heading as="h6" size="2xl">
+        <Heading as="h6" fontSize="14px">
           Hello, I'm Abreham
         </Heading>
-        <Heading as="h1" size="4xl" color="white">
+        <Heading
+          as="h1"
+          fontSize="30px"
+          color="white"
+          textTransform="uppercase"
+          paddingTop="25"
+        >
           A frontend developer
         </Heading>
-        <Heading as="h2" size="3xl" color="white">
+        <Heading
+          as="h2"
+          fontSize="20px"
+          color="white"
+          textTransform="uppercase"
+        >
           specialised in React
         </Heading>
       </VStack>

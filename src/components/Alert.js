@@ -24,13 +24,17 @@ function Alert() {
     >
       <AlertDialogOverlay>
         <AlertDialogContent
-          py={4}
+          py={50}
+          left="20%"
+          top={50}
+          width="50%"
+          borderRadius={5}
           backgroundColor={isSuccess ? "#81C784" : "#FF8A65"}
         >
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+          <AlertDialogHeader fontSize="lg" fontWeight="bold" textAlign="center">
             {isSuccess ? "All good!" : "Oops!"}
           </AlertDialogHeader>
-          <AlertDialogBody>{message}</AlertDialogBody>
+          <AlertDialogBody textAlign="center">{message}</AlertDialogBody>
         </AlertDialogContent>
       </AlertDialogOverlay>
     </AlertDialog>
